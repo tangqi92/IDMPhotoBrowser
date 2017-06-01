@@ -43,8 +43,10 @@
 
 // View customization
 @property (nonatomic) BOOL displayDoneButton;
+@property (nonatomic) BOOL displayDownloadButton;
 @property (nonatomic) BOOL useWhiteBackgroundColor;
 @property (nonatomic, weak) UIImage *doneButtonImage;
+@property (nonatomic, weak) UIImage *downloadButtonImage;
 @property (nonatomic, weak) UIColor *trackTintColor, *progressTintColor;
 
 @property (nonatomic, weak) UIImage *scaleImage;
@@ -66,6 +68,8 @@
 
 // Animation time (default .28)
 @property (nonatomic) float animationDuration;
+
+@property (nonatomic, copy) dispatch_block_t downloadButtonPressed;
 
 // Init
 - (id)initWithPhotos:(NSArray *)photosArray;
