@@ -22,6 +22,7 @@
 // Private methods and properties
 @interface IDMZoomingScrollView ()
 @property (nonatomic, weak) IDMPhotoBrowser *photoBrowser;
+@property (nonatomic, assign) BOOL zoomFlag;
 - (void)handleSingleTap:(CGPoint)touchPoint;
 - (void)handleDoubleTap:(CGPoint)touchPoint;
 @end
@@ -283,23 +284,20 @@
 	
 	// Cancel any single tap handling
 	[NSObject cancelPreviousPerformRequestsWithTarget:_photoBrowser];
-	
-	// Zoom
-	if (self.zoomScale == self.maximumDoubleTapZoomScale) {
+    
+    // Fixed the bug that the photo's scale is 4:3
+    if (!self.zoomFlag) {
+        // Zoom in
+        CGSize targetSize = CGSizeMake(self.frame.size.width / self.maximumDoubleTapZoomScale, self.frame.size.height / self.maximumDoubleTapZoomScale);
+        CGPoint targetPoint = CGPointMake(touchPoint.x - targetSize.width / 2, touchPoint.y - targetSize.height / 2);
+        [self zoomToRect:CGRectMake(targetPoint.x, targetPoint.y, targetSize.width, targetSize.height) animated:YES];
+        self.zoomFlag = !self.zoomFlag;
+    } else {
+        // Zoom out
+        [self setZoomScale:0.5f animated:YES];
+        self.zoomFlag = !self.zoomFlag;
+    }
 		
-		// Zoom out
-		[self setZoomScale:self.minimumZoomScale animated:YES];
-		
-	} else {
-		
-		// Zoom in
-		CGSize targetSize = CGSizeMake(self.frame.size.width / self.maximumDoubleTapZoomScale, self.frame.size.height / self.maximumDoubleTapZoomScale);
-		CGPoint targetPoint = CGPointMake(touchPoint.x - targetSize.width / 2, touchPoint.y - targetSize.height / 2);
-		
-		[self zoomToRect:CGRectMake(targetPoint.x, targetPoint.y, targetSize.width, targetSize.height) animated:YES];
-		
-	}
-	
 	// Delay controls
 	[_photoBrowser hideControlsAfterDelay];
 }
