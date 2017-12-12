@@ -1145,8 +1145,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
     
     
     // if ([self isLandscape:orientation]) screenWidth = screenBound.size.height;
-    
-    return CGRectMake(screenWidth - 44, screenHeight - 44, 32, 32);
+    return CGRectMake(screenWidth - 44, screenHeight - [self getWindowSafeAreaBottom] - 44, 32, 32);
 }
 
 - (CGRect)frameForCaptionView:(IDMCaptionView *)captionView atIndex:(NSUInteger)index {
@@ -1423,6 +1422,15 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
             completion();
         }];
     }
+}
+
+#pragma mark - Utils
+
+- (CGFloat)getWindowSafeAreaBottom {
+    if (@available(iOS 11.0, *)) {
+        return [UIApplication sharedApplication].delegate.window.safeAreaInsets.bottom;
+    }
+    return 0.0;
 }
 
 @end
