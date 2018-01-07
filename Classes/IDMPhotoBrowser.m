@@ -738,7 +738,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
 #pragma mark - Status Bar
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-    return _useWhiteBackgroundColor ? UIStatusBarStyleDefault : UIStatusBarStyleLightContent;
+    return UIStatusBarStyleDefault;
 }
 
 - (BOOL)prefersStatusBarHidden {
@@ -1277,7 +1277,7 @@ NSLocalizedStringFromTableInBundle((key), nil, [NSBundle bundleWithPath:[[NSBund
     
     if (![self areControlsHidden]) {
         [self cancelControlHiding];
-        _controlVisibilityTimer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(hideControls) userInfo:nil repeats:NO];
+        _controlVisibilityTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(hideControls) userInfo:nil repeats:NO];
     }
 }
 
